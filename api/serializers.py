@@ -1,12 +1,11 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Post, Profile, Comment
+from .models import Profile, Post, Comment
 
 
-class UserSirializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
-        # カスタムしたuserモデルを取ってきてる
         model = get_user_model()
         fields = ('id', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
@@ -17,8 +16,6 @@ class UserSirializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-
-    # datetimeをパースする
     created_on = serializers.DateTimeField(format="%Y-%m-%d", read_only=True)
 
     class Meta:
@@ -28,8 +25,6 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-
-    # datetimeをパースする
     created_on = serializers.DateTimeField(format="%Y-%m-%d", read_only=True)
 
     class Meta:
@@ -39,7 +34,6 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Comment
         fields = ('id', 'text', 'userComment', 'post')

@@ -1,15 +1,12 @@
-from django.db.models import query
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework import viewsets
-from . import serializers
-from .models import Comment, Profile, Post
 from rest_framework.permissions import AllowAny
+from . import serializers
+from .models import Profile, Post, Comment
 
 
-class CreateUserView(generics.GenericAPIView):
-    serializer_class = serializers.UserSirializer
-    # jwtを上書きして誰でもアクセスできるようにしている
+class CreateUserView(generics.CreateAPIView):
+    serializer_class = serializers.UserSerializer
     permission_classes = (AllowAny,)
 
 
@@ -39,7 +36,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
-    serializer_class = serializers.Comment
+    serializer_class = serializers.CommentSerializer
 
     def perform_create(self, serializer):
         serializer.save(userComment=self.request.user)
